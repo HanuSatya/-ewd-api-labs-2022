@@ -27,7 +27,10 @@ import AccountsController from '../controllers';
           .post(accountsController.getAccount);
           
       router.route('/:id')
-          .post(accountsController.updateAccount);    
+          .post(accountsController.updateAccount);
+      
+      router.route('/security/token')
+          .post(accountsController.authenticateAccount);    
 
       return router;
   };
