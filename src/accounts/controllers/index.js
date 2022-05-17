@@ -67,6 +67,23 @@ export default (dependencies) => {
         }
     };
 
+    const verifyToken = async (request, response, next) => {
+        try { 
+        // Input
+        const authHeader = request.headers.authorization;
+
+        // Treatment
+
+        const accessToken = authHeader.split(" ")[1];
+        const user = await accountService.verify(accessToken, dependencies);
+
+        //output
+        next();
+    }catch(err){
+        //Token Verification Failed
+        next(new Error(`Verification Failed ${err.message}`));
+        }
+    };
 
 
     return {
@@ -76,6 +93,7 @@ export default (dependencies) => {
         createAccount,
         getAccount,
         listAccounts,
-        updateAccount
+        updateAccount,
+        verifyToken
     };
 };

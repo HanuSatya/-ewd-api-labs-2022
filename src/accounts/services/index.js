@@ -11,6 +11,15 @@ import Account from '../entities/Account';
       const token = tokenManager.generate({ email: account.email });//JUST Temporary!!! TODO: make it better
       return token;
     },
+
+    verifyToken:   async (token,{accountsRepository, tokenManager}) => {
+      const decoded = await tokenManager.decode(token);
+      const user = await accountsRepository.getByEmail(decoded.email);
+      if (!user) {
+          throw new Error('Bad token');
+      }
+      return user.email;
+    },
     
     registerAccount: async  (firstName, lastName, email, password, {accountsRepository, authenticator}) => {
       password = await authenticator.encrypt(password);
