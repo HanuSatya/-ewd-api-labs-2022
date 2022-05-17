@@ -1,12 +1,21 @@
+import ValidationController from '../controllers/ValidationController';
 import express from 'express';
-  import AccountsController from '../controllers';
+import AccountsController from '../controllers';
+
 
   const createRouter = (dependencies) => {
       const router = express.Router();
+      
       // load controller with dependencies
+
+      const validationController = ValidationController(dependencies);//Add this lineLoad validation controller with dependencies
       const accountsController = AccountsController(dependencies);
+
       router.route('/')
-          .post(accountsController.createAccount);
+            .post(validationController.validateAccount,accountsController.createAccount); //add validateAccount to route 
+
+      router.route('/')
+            .post(accountsController.createAccount);
 
           router.route('/')
           .get(accountsController.listAccounts);

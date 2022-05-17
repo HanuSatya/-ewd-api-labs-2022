@@ -7,6 +7,8 @@ import buildDependencies from "./src/config/dependencies";
 import createMoviesRouter from './src/movies/routes';
 import upcomingsRouter from './src/movies';
 import db from './src/config/db';
+import errorHandler from './src/utils/ErrorHandler';
+
 
 dotenv.config();
 db.init();
@@ -16,7 +18,9 @@ const app = express();
 const port = process.env.PORT;
 const dependencies = buildDependencies();
 
+app.use(errorHandler);
 app.use(express.json());
+app.use(errorHandler);
 
 app.use('/api/movies', moviesRouter);
 app.use('/api/genres', genresRouter);
