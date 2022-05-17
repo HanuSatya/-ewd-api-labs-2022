@@ -16,6 +16,9 @@ import express from 'express';
 
       router.route('/:id')
           .post(accountsController.getAccount);
+          
+      router.route('/:id')
+          .post(accountsController.updateAccount);    
 
       return router;
   };

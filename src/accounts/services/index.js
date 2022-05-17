@@ -8,6 +8,10 @@ import Account from '../entities/Account';
     getAccount: (accountId, {accountsRepository}) => {
       return accountsRepository.get(accountId);
     },
+    updateAccount: (id, firstName, lastName, email, password, {accountsRepository})=>{
+      const account = new Account(undefined, id, firstName, lastName, email, password);
+      return accountsRepository.persist(account);   
+    },
     find: ({accountsRepository})=>{
       return accountsRepository.find();
     },
