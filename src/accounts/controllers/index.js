@@ -75,7 +75,7 @@ export default (dependencies) => {
         // Treatment
 
         const accessToken = authHeader.split(" ")[1];
-        const user = await accountService.verify(accessToken, dependencies);
+        const user = await accountService.verifyToken(accessToken, dependencies);
 
         //output
         next();

@@ -8,17 +8,16 @@ import express from 'express';
       const moviesController = MoviesController(dependencies);
       const accountsController = AccountsController(dependencies);
 
-      router.route('/*')
-        .all(accountsController.verifyToken);
+
 
       router.route('/:id')
-          .get(moviesController.getMovie);
+          .get(accountsController.verifyToken,moviesController.getMovie);
 
       router.route('/upcoming')
-          .get(moviesController.getUpcomingMovie);    
+          .get(accountsController.verifyToken,moviesController.getUpcomingMovie);    
 
       router.route('/')
-          .get(moviesController.find);
+          .get( moviesController.find);
 
       return router;
   };

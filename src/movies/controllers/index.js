@@ -12,15 +12,16 @@ export default (dependencies) => {
     };
     const getUpcomingMovie = async (request, response, next) => {
         //input
-        const movieId = request.params.id;
+        // const movieId = request.params.id;
+        const query =  request.query;   
         // Treatment
-        const movie = await moviesService.getUpcomingMovie(movieId, dependencies);
+        const movie = await moviesService.getUpcomingMovie(query, dependencies);
         //output
         response.status(200).json(movie);
     };
     const find = async (request, response, next) => {
         //input
-        const query = request.query;
+        const query =  request.query;     
         // Treatment
         const accounts = await moviesService.find(query, dependencies);
         //output
