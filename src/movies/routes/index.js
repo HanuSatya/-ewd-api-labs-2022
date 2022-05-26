@@ -19,6 +19,11 @@ import express from 'express';
       router.route('/')
           .get( moviesController.find);
 
+      router.route('/fantasymovie')
+          .post(moviesController.createFantasyMovie);
+      router.route('/fantasymovie/:id')
+          .get(moviesController.getFantasyMovie);
+
       return router;
   };
   export default createMoviesRouter;
