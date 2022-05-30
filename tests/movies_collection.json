@@ -232,6 +232,143 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Create Fantasy Movie",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"firstName\", pm.variables.replaceIn('{{$randomFirstName}}'))\r",
+							"pm.collectionVariables.set(\"lastName\",pm.variables.replaceIn('{{$randomLastName}}'))\r",
+							"pm.collectionVariables.set(\"email\", pm.variables.replaceIn('{{$randomEmail}}'))\r",
+							"pm.collectionVariables.set(\"password\",\"test123@\")"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"  pm.test(\"Add Fantasy Movie: Successful Response\",()=>pm.response.to.have.status(201))\r",
+							"\r",
+							"    //... other tests\r",
+							"  const jsonData = pm.response.json();\r",
+							"  pm.test(\"Add FantasyMovie: Response Object contains correct properties\",()=>{\r",
+							"    pm.expect(jsonData).to.have.property(\"id\");\r",
+							"    pm.expect(jsonData.id).to.be.a(\"string\");\r",
+							"    pm.collectionVariables.set(\"fantasymovieid\",jsonData.id);\r",
+							"    pm.expect(jsonData.title).to.eql(pm.collectionVariables.get(\"title\"));\r",
+							"    pm.expect(jsonData.overview).to.eql(pm.collectionVariables.get(\"overview\"));\r",
+							"    pm.expect(jsonData.runtime).to.eql(pm.collectionVariables.get(\"runtime\"));\r",
+							"     pm.expect(jsonData.release_date).to.eql(pm.collectionVariables.get(\"release_date\"));\r",
+							"       })"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\":\"{{title}}\",\r\n    \"overview\":\"{{overview}}\",\r\n    \"genres\":[{{genre1}},{{genre2}}],\r\n    \"runtime\":\"{{runtime}}\",\r\n    \"release_date\":\"{{release_date}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/movies/fantasymovie",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"movies",
+						"fantasymovie"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Fantasy Movie",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"firstName\", pm.variables.replaceIn('{{$randomFirstName}}'))\r",
+							"pm.collectionVariables.set(\"lastName\",pm.variables.replaceIn('{{$randomLastName}}'))\r",
+							"pm.collectionVariables.set(\"email\", pm.variables.replaceIn('{{$randomEmail}}'))\r",
+							"pm.collectionVariables.set(\"password\",\"test123@\")"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							" pm.test(\"Get Fantasy Movie: Successful Response\",()=>pm.response.to.have.status(200))\r",
+							" pm.test(\"Get Fantasy Movie: Content-Type is correct\", function () {\r",
+							"   pm.expect(pm.response.headers.get('Content-Type')).to.contain('application/json');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Get Fantasy Movie: Response time is less than 400ms\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(400);\r",
+							"});\r",
+							"\r",
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Get Fantasy Movie: Test fantasy movie data of response\", () => {\r",
+							"  pm.expect(jsonData).to.be.an(\"object\");\r",
+							"  pm.expect(jsonData.id).to.be.a(\"string\");\r",
+							"  pm.expect(jsonData.title).to.be.a(\"string\");\r",
+							"  pm.expect(jsonData.runtime).to.be.a(\"number\");\r",
+							"  pm.expect(jsonData.overview).to.be.a(\"string\");\r",
+							"  pm.expect(jsonData.release_date).to.be.a(\"string\");\r",
+							"  pm.expect(jsonData.genres).to.be.an(\"array\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/movies/fantasymovie/{{fantasymovieid}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"movies",
+						"fantasymovie",
+						"{{fantasymovieid}}"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
@@ -272,12 +409,47 @@
 		},
 		{
 			"key": "password",
-			"value": "test@1",
+			"value": "test123@",
 			"type": "string"
 		},
 		{
 			"key": "authToken",
 			"value": ""
+		},
+		{
+			"key": "title",
+			"value": "Sample Title",
+			"type": "string"
+		},
+		{
+			"key": "overview",
+			"value": "Sample overview",
+			"type": "string"
+		},
+		{
+			"key": "runtime",
+			"value": "2",
+			"type": "string"
+		},
+		{
+			"key": "release_date",
+			"value": "03/25/2015",
+			"type": "string"
+		},
+		{
+			"key": "genre1",
+			"value": "12",
+			"type": "string"
+		},
+		{
+			"key": "genre2",
+			"value": "13",
+			"type": "string"
+		},
+		{
+			"key": "fantasymovieid",
+			"value": "",
+			"type": "string"
 		}
 	]
 }
